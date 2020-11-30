@@ -1,0 +1,19 @@
+{
+  "name": "teacher_student_class",
+  "version": "1.0.0",
+  "description": "no",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shalouzaixiayu/Django-web.git"
+  },
+  "author": "shalouzaixiayu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shalouzaixiayu/Django-web/issues"
+  },
+  "homepage": "https://github.com/shalouzaixiayu/Django-web#readme"
+}

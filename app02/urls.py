@@ -5,8 +5,10 @@
 # @CSDN      :  https://me.csdn.net/qq_45906219
 from django.urls import path
 from app02 import views
+
 app_name = "app02"
 
 urlpatterns = [
     path('testform.html', views.testform, name='testform'),
+    path("getdata/", views.getdata, name="getdata"),
 ]

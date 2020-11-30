@@ -15,52 +15,89 @@
 {# 重写这个form-control 因为原始输出多了空格 #}
 <body>
 <h2 class="text-center">The test the form function </h2>
-<div class="text-center">
-    <form id="myfm2" action="{% url "app02:testform" %}" method="post" novalidate enctype="multipart/form-data">
-        {% csrf_token %}
-        {#    {{ obj.as_p }}#}
-        {#    这个是快捷生成所有input  封装性太高了 我们不推荐使用 #}
-        <p><label for="{{ obj.name.id_for_label }}">{{ obj.name.label }} : </label>
-            {{ obj.name }} {{ obj.errors.name.0 }}</p>
-        <p><label for="id_passwd">{{ obj.passwd.label }} : </label>
-            {{ obj.passwd }} {{ obj.errors.passwd.0 }}</p>
-        <p><label for="id_age">{{ obj.age.label }}</label>
-            {{ obj.age }} {{ obj.errors.age.0 }}</p>
-        <p><label for="id_email">{{ obj.email.label }}</label>
-            {{ obj.email }} {{ obj.errors.email.0 }}</p>
-        <p><label for="{{ obj.sex.id_for_label }}">{{ obj.sex.label }} : </label>
-            {{ obj.sex }} {{ obj.errors.sex.0 }}</p>
-        <p><label for="id_area">{{ obj.area.label }} : </label>
-            {{ obj.area }} {{ obj.errors.area.0 }}</p>
-        <p><label for="id_author">{{ obj.author.label }} : </label>
-            {{ obj.author }} {{ obj.errors.author.0 }}</p>
-        <p><label for="id_keep">{{ obj.keep.label }} : </label>
-            {{ obj.keep }} {{ obj.errors.keep }}</p>
-        <p><label for="id_hobby">{{ obj.hobby.label }} : </label>
-            {{ obj.hobby }} {{ obj.errors.hobby }} </p>
-        <p><label for="id_date">{{ obj.date.label }} : </label>
-            {{ obj.date }} {{ obj.errors.date.0 }}</p>
-        <p><label for="id_YourTip">{{ obj.YourTip.label }}</label><br>
-            {{ obj.YourTip }} {{ obj.errors.YourTip }}</p>
-        <p><label for="{{ obj.file.id_for_label }}">{{ obj.file.label }}</label>
-            {{ obj.file }} {{ obj.errors.file }}</p>
-        <p><label for="id_stu">{{ obj.stu.label }}</label>
-            {{ obj.stu }}</p>
+<div>
 
-        {{ obj.stu1 }}
+    <div class="text-center">
+        <form id="myfm2" action="{% url "app02:testform" %}" method="post" novalidate enctype="multipart/form-data">
+            {% csrf_token %}
+            {#    {{ obj.as_p }}#}
+            {#    这个是快捷生成所有input  封装性太高了 我们不推荐使用 #}
+            {#     __all__   #}
+            <p><label for="{{ obj.name.id_for_label }}">{{ obj.name.label }} : </label>
+                {{ obj.name }} {{ obj.errors.name.0 }}</p>
+            <p><label for="id_passwd">{{ obj.passwd.label }} : </label>
+                {{ obj.passwd }} {{ obj.errors.passwd.0 }}</p>
+            <p><label for="id_age">{{ obj.age.label }}</label>
+                {{ obj.age }} {{ obj.errors.age.0 }}</p>
+            <p><label for="id_email">{{ obj.email.label }}</label>
+                {{ obj.email }} {{ obj.errors.email.0 }}</p>
+            <p><label for="{{ obj.sex.id_for_label }}">{{ obj.sex.label }} : </label>
+                {{ obj.sex }} {{ obj.errors.sex.0 }}</p>
+            <p><label for="id_area">{{ obj.area.label }} : </label>
+                {{ obj.area }} {{ obj.errors.area.0 }}</p>
+            <p><label for="id_author">{{ obj.author.label }} : </label>
+                {{ obj.author }} {{ obj.errors.author.0 }}</p>
+            <p><label for="id_keep">{{ obj.keep.label }} : </label>
+                {{ obj.keep }} {{ obj.errors.keep }}</p>
+            <p><label for="id_hobby">{{ obj.hobby.label }} : </label>
+                {{ obj.hobby }} {{ obj.errors.hobby }} </p>
+            <p><label for="id_date">{{ obj.date.label }} : </label>
+                {{ obj.date }} {{ obj.errors.date.0 }}</p>
+            <p><label for="id_YourTip">{{ obj.YourTip.label }}</label><br>
+                {{ obj.YourTip }} {{ obj.errors.YourTip }}</p>
+            <p><label for="{{ obj.file.id_for_label }}">{{ obj.file.label }}</label>
+                {{ obj.file }} {{ obj.errors.file }}</p>
+            <p><label for="id_stu">{{ obj.stu.label }}</label>
+                {{ obj.stu }}</p>
 
-        <input type="submit" value="POST表单提交" class="btn btn-success">
-        {#    <input type="button" value="Ajax提交" onclick="AjaxSubmit();">#}
-        <input type="button" value="Ajax提交" id="ajaxsubmit" class="btn btn-info">
-        {# 使用 Submit 类型 会跳转页面进行数据验证 小心使用   #}
-    </form>
+            {{ obj.stu1 }}
+
+            <input type="submit" value="POST表单提交" class="btn btn-success">
+            {#    <input type="button" value="Ajax提交" onclick="AjaxSubmit();">#}
+            <input type="button" value="Ajax提交" id="ajaxsubmit" class="btn btn-info">
+            {# 使用 Submit 类型 会跳转页面进行数据验证 小心使用   #}
+        </form>
+    </div>
+
+    <div class="text-center">
+        <table id="tb1" border="1px">
+
+        </table>
+    </div>
+
 </div>
+
+
 <script src="/static/jquery.js"></script>
 <script>
     $(function () {
         // 当页面加载完之后
         AjaxSubmit();
+        getdata();
     })
+
+    function getdata() {
+        //  向后台发送请求， 获得数据
+        $.ajax({
+            url: "{% url 'app02:getdata' %}",
+            method: "GET",
+            dataType: "JSON",
+            success: function (arg) {
+                if (arg.status) {
+                    let _data = JSON.parse(arg.data);
+                    // console.log(_data);
+                    // console.log(arg.data);
+                    for (let i = 0; i < _data.length; i++) {
+                        let data = _data[i]["fields"]
+                        //console.log(data)
+                        // window.alert(data["name"]);
+                    }
+
+                }
+            }
+
+        })
+    }
 
     function AjaxSubmit() {
         $("#ajaxsubmit").click(function () {

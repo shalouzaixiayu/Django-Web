@@ -145,3 +145,42 @@ def testform(request):
             return HttpResponseRedirect("http://www.baidu.com")
         else:
             return render(request, 'testform.html', locals())
+
+
+from django.core.serializers import serialize
+
+
+def getdata(request):
+    """
+    二种序列化的方式都可以， 如果返回所有对象 all ， 就要使用django内置的
+    serialize 序列化， 将 queryfield 转换为 字符串， 然后在经过json转换一下到前端，
+    最后前端经过二次反序列化，就可以拿到对象，
+    在这里，  data被序列化了2次，  status 被序列化了1次
+    前端反序列化的时候， 也是同样的次数
+
+    如果不直接拿数据， 而是用  values 去取一些数据，那么我们要把取出来的  querylist 转换为
+    list 类型， 然后再经过 json进行序列化操作， 传到前端， 但是前端这个时候， 只是需要经过一次
+    反序列化就可以拿到data对象了，  不需要这么麻烦，
+
+    区别，   直接拿到所有的数据 all  需要使用django内置的函数进行额外的序列化， 前端需要进行二次反序列化
+            只拿一部分数据 values   需要将 querylist转换为 list 对象，  前端只需要进行一次反序列化
+
+    :param request:
+    :return:
+    """
+    ret = {"status": True, "data": None}
+    try:
+        user_list = models.Student.objects.all()
+        ret["data"] = serialize("json", user_list)
+    except Exception as e:
+        ret["status"] = False
+    return HttpResponse(json.dumps(ret))
+
+    # def getdata(request):
+    #     ret = {"status": True, "data": None}
+    #     try:
+    #         user_list = models.Student.objects.all().values("id", "name")
+    #         ret["data"] = list(user_list)
+    #     except Exception as e:
+    #         ret["status"] = False
+    #     return HttpResponse(json.dumps(ret))
