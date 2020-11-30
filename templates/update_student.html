@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update_Student</title>
+    <style type="text/css">
+        body {
+            text-align: center;
+            height: 1500px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <form action="{% url "cst:update_student" %}" method="post">
+        {% csrf_token %}
+        <input type="text" style="display: none" name="student_id" value="{{ student_id }}">
+        <label for="name">姓名:&nbsp;&nbsp;</label>
+
+        <input id="name" type="text" name="name" value="{{ student_info.name }}">
+        {{ name_error }}<br><br>
+
+        <label for="age">年龄:&nbsp;&nbsp;</label>
+
+        <input id="age" type="text" name="age" value="{{ student_info.age }}">
+        {{ age_error }}<br><br>
+        {% if student_info.gender == "男性" %}
+            男性:<label>
+            <input type="radio" name="gender" checked="checked" value="1">
+        </label>
+            女性: <label>
+            <input type="radio" name="gender" value="0">
+        </label><br><br>
+        {% else %}
+            男性:<label>
+            <input type="radio" name="gender" value="1">
+        </label>
+            女性: <label>
+            <input type="radio" name="gender" checked="checked" value="0">
+        </label><br><br>
+
+        {% endif %}
+
+
+        <label for="phone">电话:&nbsp;&nbsp;</label>
+
+        <input id="phone" type="text" name="phone" value="{{ student_info.phone_number }}">
+        {{ phone_error }}
+        <br><br>
+
+        <label for="choose_class">选择班级:&nbsp;&nbsp;</label>
+        <select name="choose_class" id="choose_class" multiple size="3">
+            {% for foo in class_list %}
+                {% if student_info.student_class.id == foo.id %}
+                    <option value="{{ foo.id }}"
+                            selected="selected">{{ forloop.counter }}--{{ foo.class_name }}</option>
+                {% else %}
+                    <option value="{{ foo.id }}">{{ forloop.counter }}--{{ foo.class_name }}</option>
+                {% endif %}
+
+            {% endfor %}
+        </select>
+        <br><br>
+        <p>
+            <input type="submit" value="提交" onclick="on_error('成功更新！')"> &nbsp; &nbsp;
+            <input type="button" value="返回" onclick="goto_home()">
+        </p>
+    </form>
+</div>
+
+</body>
+{% load static %}
+<link rel="stylesheet" href="{% static "cst/css/set_bk.css" %}">
+<script type="text/javascript" src="{% static 'cst/js/base.js' %}"></script>
+
+</html>

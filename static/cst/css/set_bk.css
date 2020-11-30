@@ -1,0 +1,7 @@
+body {
+    background: url("bk.png") no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed;
+    /*background-color: #CCCCCC;*/
+    background-color: rgba(220, 38, 38, 0.2);
+}

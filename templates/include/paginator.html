@@ -1,0 +1,47 @@
+<!--分页器-->
+<br><br><br><br><br>>
+
+<style type="text/css">
+    .pg a {
+        color: darkseagreen;
+    }
+</style>
+
+
+<div class="text-center pg" style="color:black;opacity: 60%">
+
+    <ul class="pagination pagination-sm">
+        {# 前一页 #}
+        {% if page.has_previous %}
+            <li><a href="{% url 'cst:student' %}?p={{ page.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">«</span></a></li>
+        {% else %}
+            <li class="disabled"><a href="{% url 'cst:student' %}" aria-label="Next"><span
+                    aria-hidden="true">«</span></a></li>
+        {% endif %}
+
+        {# 中间循环部分 #}
+        {# 这里是自己额外修改的 #}
+        {% for foo in paginator.page_range %}
+            {% if foo == page.number %}
+                <li class="active"><span>{{ foo }}</span></li>
+            {% else %}
+                <li><a href="{% url 'cst:student' %}?p={{ foo }}">{{ foo }}</a></li>
+            {% endif %}
+
+        {% endfor %}
+
+
+        {% if page.has_next %}
+            <li><a href="{% url 'cst:student' %}?p={{ page.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">»</span></a></li>
+        {% else %}
+            <li class="disabled"><a href="{% url 'cst:student' %}?p={{ page.number }}" aria-label="Next">
+                <span aria-hidden="true">»</span></a></li>
+        {% endif %}
+        {#        <li><input type="text" placeholder="查询页码"></li>#}
+        <br>
+        <div class="text-center">{{ page.number }}/{{ paginator.num_pages }}</div>
+    </ul>
+</div>
+
