@@ -7,3 +7,10 @@ esc  退出编辑模式
 最后输入 : wq  退出编译器哦
 
 最后我在测试一下
+
+首先， 我们在 dev 分支下 进行修改， 然后 
+	git add . 
+	git commit -m ""
+之后，我们切换回主分支， push 一下就可以了
+git push -u origin master
+
