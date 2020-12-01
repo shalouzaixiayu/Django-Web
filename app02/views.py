@@ -7,6 +7,7 @@ import json
 from django.utils.safestring import mark_safe  # 将 string  加工成 html 文档 返回到页面,进行渲染
 from cst import models
 from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
+from teacher_student_class.settings import MEDIA_ROOT
 
 
 class MyForms(forms.Form):
@@ -115,7 +116,7 @@ class MyForms(forms.Form):
         对数据进行额外处理， 扩展form中的 clean_%s  方式
         如果数据正确， 不重复, 直接返回cleaned_data
         如果数据不正确  重复.  抛出异常 ValidationError
-        :return:git`
+        :return:
         """
         name_date = self.cleaned_data["name"]
         if models.Student.objects.filter(name=name_date).count():
@@ -184,3 +185,25 @@ def getdata(request):
     #     except Exception as e:
     #         ret["status"] = False
     #     return HttpResponse(json.dumps(ret))
+
+
+from os import path
+
+
+def getfile(request):
+    """
+    将页面中上传的文件， 导入数据库中。
+    实现数据的下载
+    :param request:
+    :return:
+    """
+    if request.method == "GET":
+        return render(request, "getfile.html", locals())
+    else:
+        text = request.POST.get("text")
+        img = request.FILES.get("img")
+        with open(path.join(MEDIA_ROOT, img.name), 'wb') as fw:
+            for line in img.chunks():
+                fw.write(line)
+            print("ok")
+        return HttpResponse(json.dumps(text, ensure_ascii=False))

@@ -11,10 +11,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -26,7 +26,6 @@ SECRET_KEY = 'a=3c0*go_h^5qp_^-fsp&7h1&g8eh60c=_=^l06(7zdya-*2no'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -71,7 +70,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'teacher_student_class.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
@@ -81,7 +79,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -101,7 +98,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -110,7 +106,6 @@ LANGUAGE_CODE = 'zh-Hans'  # 中文
 TIME_ZONE = 'Asia/Shanghai'  # 中国时差
 
 USE_I18N = True
-
 
 USE_L10N = True
 
@@ -121,9 +116,10 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
-import os
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     # os.path.join(BASE_DIR, "static/"),
 ]
+
+# 上传文件 所在地
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/file/')

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GETFIEL</title>
+    <link rel="stylesheet" href="/static/plug_in/bootstrap/css/bootstrap.min.css">
+    <style type="text/css">
+        .fileinput-button {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        .fileinput-button input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            -ms-filter: 'alpha(opacity=0)';
+        }
+    </style>
+</head>
+<body>
+<h1>获得文件</h1>
+<div>
+    <form enctype="multipart/form-data" action="{% url 'app02:getfile' %}" method="post">
+        {% csrf_token %}
+
+        <span>图片上传<span style="color: red">*</span></span>
+        <label class="btn btn-info fileinput-button" style="left: 10px">
+            <span>选择图片</span>
+            <input type="file" name="img">
+        </label>
+
+        <p><input type="submit" name="提交上传"></p>
+
+    </form>
+</div>
+
+</body>
+</html>

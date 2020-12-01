@@ -11,4 +11,5 @@ app_name = "app02"
 urlpatterns = [
     path('testform.html', views.testform, name='testform'),
     path("getdata/", views.getdata, name="getdata"),
+    path("getfile.html", views.getfile, name="getfile"),
 ]
