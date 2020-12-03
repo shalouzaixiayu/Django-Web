@@ -58,3 +58,35 @@ class Teacher(models.Model):
         return f"姓名: {self.name} | 年龄: {self.age}  | 性别: {gender_s} |  所授课程：{self.teacher_object} |  授课年限： {self.teacher_worked_years}"
 
 
+# 练习创建多对多字段
+class people(models.Model):
+    name = models.CharField(max_length=32)
+
+    def __str__(self):
+        return '姓名: %s' % self.name
+
+
+class tag(models.Model):
+    """这是使用 models 的自带的 manytomany字段 ， 很好用，但是缺点生成的第三张表只有三列"""
+    _property = models.CharField(max_length=64)
+    people_to_tag = models.ManyToManyField(to="people", related_name="ptt")
+
+    def __str__(self):
+        return "%s 特征: %s" % (self.people_to_tag.all().values("name")[0]["name"], self._property)
+
+
+class peo_to_tag(models.Model):
+    """自己编写的第三张表函数, 想要多少列就可以自己自定义，
+    这二种方式选一种就可以了， 不需要二个都设置"""
+    p = models.ForeignKey(to="people", db_index=True, on_delete=models.CASCADE)
+    t = models.ForeignKey(to="tag", db_index=True, on_delete=models.CASCADE)
+    n_date = models.DateField()
+
+    class Meta:
+        # 这是元类型， 联合唯一 还没涉及到
+        unique_together = [
+            ('p', 't'),
+        ]
+
+    def __str__(self):
+        return "%s 特征: %s" % (self.p.name, self.t._property)

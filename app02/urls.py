@@ -5,6 +5,7 @@
 # @CSDN      :  https://me.csdn.net/qq_45906219
 from django.urls import path
 from app02 import views
+from django.views import View
 
 app_name = "app02"
 
