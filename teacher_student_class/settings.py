@@ -25,6 +25,7 @@ SECRET_KEY = 'a=3c0*go_h^5qp_^-fsp&7h1&g8eh60c=_=^l06(7zdya-*2no'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+DEBUG_TOOLBAR_PATCH_SETTINGS = False  # . 显示设置调试工具不要调整settings中的设置
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -37,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cst.apps.CstConfig',
+    'debug_toolbar.apps.DebugToolbarConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -47,6 +50,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+]
+
+INTERNAL_IPS = [
+    # ...
+    '127.0.0.1',
+    # ...
 ]
 
 ROOT_URLCONF = 'teacher_student_class.urls'
