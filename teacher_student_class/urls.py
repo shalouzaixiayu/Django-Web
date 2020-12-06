@@ -18,6 +18,7 @@ from django.urls import path, include
 import debug_toolbar
 
 urlpatterns = [
+    path('testajax/', include("testAjax.urls", namespace="testajax")),
     path('app02/', include("app02.urls", namespace="app02")),
     path('cls/', include("cst.urls", namespace="cst")),
     path('admin/', admin.site.urls),

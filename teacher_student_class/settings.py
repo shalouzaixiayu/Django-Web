@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 INTERNAL_IPS = [
@@ -133,3 +133,6 @@ STATICFILES_DIRS = [
 
 # 上传文件 所在地
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/file/')
+
+X_FRAME_OPTIONS = 'ALLOWALL url'		# 解决 iframe 跨域问题
+# 这个是将值改变为可以响应  url指定地址

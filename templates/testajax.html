@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .btn {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #6DDCBD;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+&emsp;<h>测试Ajax</h>
+&emsp;<h2>分为多个步骤练习</h2>
+
+
+<a class="btn" id="ajax1">Ajax提交使用jQuery</a>
+<br>
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="submit" value="提交" class="btn">
+</form>
+<div>
+    &emsp;<span>使用原生的XMLRequest进行Ajax提交数据</span><br>
+    <a class="btn" id="ajax2">以GET方式进行Ajax提交数据</a>
+</div>
+<div>
+    &emsp;<span>使用原生的XMLRequest进行Ajax提交数据</span><br>
+    <a class="btn" id="ajax3">以POST方式进行Ajax提交数据</a>
+</div>
+
+<div>
+    <h6>初步测试一下 iframe 有什么作用 </h6>
+    <p>
+        <input type="text" id="inp1" onclick="inp_submit()">
+    </p>
+    <iframe id="iframe1" src="http://www.w3school.com.cn" frameborder="2" style="height: 10%;width: 20%"></iframe>
+</div>
+
+<div>
+    <h6>利用iframe 和 form 进行一次 ajax的伪造请求 </h6>
+    <iframe name="iframe2" id="iframe2" style="width: 600px;height: 300px"></iframe>
+    <form action="/testajax/Ajax.html" method="post" target="iframe2" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" name="ts">
+        <input type="submit" value="提交" onclick="onloadajax()">
+    </form>
+</div>
+
+<div>
+    <h6>利用jQuery中的ajax发送文件,封装到formdata中</h6>
+    <input type="file" id="image1" name="image" multiple="">
+    <a class="btn" onclick="uplodafile1()">提交 - 可以多选文件 提交 </a>
+</div>
+
+</body>
+<script src="/static/jquery.js"></script>
+<script>
+    function uplodafile1() {
+        // 利用jQuery中的ajax发送文件,封装到formdata
+        let datas = new FormData();
+        datas.append("message", "又可以加文字,又可以加文件");
+        datas.append("image1", $("#image1").get(0).files[0]);
+        datas.append("image2", $("#image1").get(0).files[1]);
+        // 添加防 csrf 跨站保护
+        datas.append("csrfmiddlewaretoken", $("[name='csrfmiddlewaretoken']").val())
+        // data.append("image", document.getElementById("image1").files);
+        // 二种方式都可以  下面进行ajax的提交
+        $.ajax({
+            url: "AjaxFile.html",
+            method: "POST",
+            data: datas,
+            dataType: "JSON",
+            success: function (arg) {
+                console.log(arg);
+            },
+            // 下面加2个参数,  因为在 jQuery 里面封装了这些, 所以我们要把这些默认设置为False
+            processData: false,    //   告诉 jQuery  不要取规则这些数据
+            contentType: false,   // 告诉 jQuery   不要设置请求头
+        })
+    }
+
+    function onloadajax() {
+        document.getElementById("iframe2").onload = function () {
+            // this 作用域  指当前所在标签域
+            console.log(this);
+            console.log(this.contentWindow.document);
+            console.log(this.contentWindow.document.body.innerText);
+            // JSON parse 反序列化 将字符串转换为对象 用来引用
+            let content = JSON.parse(this.contentWindow.document.body.innerText);
+            if (content.status) {
+                window.alert(content.message);
+                // $("#iframe2").html(content.message);
+                // 更改一下 iframe 里面的值 2种方式都可以 先去拿 在修改
+                this.contentWindow.document.body.innerText = content.message;
+                $(this).contents().find("body").text("这人天天催我加班. ");
+            }
+
+            let ajaxcontent = JSON.parse($(this).contents().find("body").text());
+            if (ajaxcontent.status) {
+                $("#iframe2").html(ajaxcontent.message);
+                // 2种方式都可以 找到  iframe 中的数据
+                window.alert(ajaxcontent.message);
+            }
+        }
+    }
+
+    $(function () {
+        AjaxFromJquery();
+        XMLFromJquery();
+    })
+
+    function inp_submit() {
+        // 触发 input标签 传入的网址
+        $("#iframe1").attr("src", $("#inp1").val());
+    }
+
+    function AjaxFromJquery() {
+        $("#ajax1").click(function () {
+            alert("Welcome you to from the Ajax_Jquery !")
+            $.ajax({
+                url: "Ajax.html",
+                method: "GET",
+                dataType: "JSON",
+                data: {"k": "v"},
+                success: function (arg) {
+                    console.log(arg);
+                    console.log("how are you !");
+                }
+            })
+        })
+    }
+
+    function XMLFromJquery() {
+        $('#ajax2').click(function () {
+
+            let xhr = new XMLHttpRequest();
+            // 实现xml原生的 ajax操作
+            xhr.onreadystatechange = function () {
+                // 如果状态发生了改变， 五大状态， 0-4
+                // url: https://www.w3school.com.cn/xmldom/dom_http.asp
+                if (xhr.readyState === 4) {
+                    console.log(xhr.responseText);
+                    confirm(xhr.responseText);
+                }
+            };
+            xhr.open("GET", "Ajax.html?q=me&qq=meme")
+            xhr.send(null)
+        })
+        $('#ajax3').click(function () {
+
+            let xhr = new XMLHttpRequest();
+            // 实现xml原生的 ajax操作
+            xhr.onreadystatechange = function () {
+                // 如果状态发生了改变， 五大状态， 0-4
+                // url: https://www.w3school.com.cn/xmldom/dom_http.asp
+                if (xhr.readyState === 4) {
+                    console.log(xhr.responseText);
+                    confirm(xhr.responseText);
+                }
+            };
+            xhr.open("POST", "Ajax.html")
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset-UTF-8")
+            xhr.send("q=me&qq=meme")
+        })
+
+
+    }
+
+</script>
+</html>

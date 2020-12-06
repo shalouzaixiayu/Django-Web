@@ -35,8 +35,6 @@ def show_student_table(request):
     return render(request, "student.html", locals())
 
 
-
-
 # def add_student(request):
 #     """
 #     增加学生信息
@@ -174,4 +172,3 @@ def update_student(request):
 #             is_ok = e
 #
 #         return render(request, "update_student.html", locals())
-
